@@ -1,11 +1,31 @@
-<h2>Welcome</h2>
-<p><%= user.email %></p>
-<p><%= user.name %></p>
-<br><br>
-You are interested in: <p><%= user.interest %> - <a href="/matches/get-more">get more matches here</a></p>
-<div>
-See all matches <a href="/matches"> here. </a>
+<div style = "text-align: center;"> 
+    <h1>Your profile</h1>
+    Your username:<br><%= user.name %>
+        <br></br>
+    Your email:<br><%= user.email %></p>
+            <br>
+    You are interested in:<br><%= user.interest %> 
+            <br></br>
+        Do you want more macthes?
+        <a href="/matches/get-more">Explore here</a></p>
+        <div>
+            <br>
+            Show me my matches 
+            <a href="/matches"> Press here </a>
+        </div>
+        <br></br>
+            <div>
+            Do you want to logout?
+                <br>
+            <a href="/logout">Log out</a>
+            </div>
 </div>
-<div>
-<a href="/logout">Log out</a>
-</div>
+
+<style>
+    h1 {
+     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: blue;
+    }
+  </style>
+<!--EJS is a simple templating language that lets you generate HTML markup with plain JavaScript. 
+No religiousness about how to organize things. No reinvention of iteration and control-flow. It's just plain JavaScript.-->

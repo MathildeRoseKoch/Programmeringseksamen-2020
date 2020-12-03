@@ -1,14 +1,14 @@
 //var User = require('../models/user');
 var path = require('path');
 
-var config = require('../databaseConfig.js');
+var config = require('../database.js');
 var con = config.connection;
 
-// Display list of all users.
+// viser lister af alle brugere
 exports.show_possible_match = function(req, res) {
-   if(req.session.loggedin == true && req.session.email) {
+   if(req.session.loggedin == true && req.session.email) {//hvis bruger er logget ind med rigtig email 
 
-   		function fetchID(callback) {
+   		function fetchID(callback) { 
 	   		con.query('SELECT * FROM users WHERE email = ?', [req.session.email], function(error, results, fields) {
 				if (results.length > 0) {
 					var user = results[0];
@@ -85,7 +85,7 @@ exports.make_skip_match = function(req, res) {
 								})
 					   		}
 
-					   		checkMatch(function(match) {
+					   		checkMatch(function(match) { //indsætter match i mysql scheama for match
 					   			if(match == 'no-match') {
 					   				var sql = "INSERT INTO matches (ori_user_id, match_user_id, ori_user_name, match_user_name) VALUES (?, ?, ?, ?)";
 									con.query(sql, [current_user.id, match_id, current_user.name, match_name], function (err, result) {});

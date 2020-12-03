@@ -1,20 +1,21 @@
+//Routing refers to how an application’s endpoints (URIs) respond to client requests. For an introduction to routing, see Basic routing.
 var express = require('express');
 var router = express.Router();
 
 // Require controller modules.
 var user_controller = require('../controllers/userController');
-var index_controller = require('../controllers/indexController');
+var login_controller = require('../controllers/loginController');
 var matches_controller = require('../controllers/matchesController');
 
 /** 
  * Visitor Frontend
  */
 
-router.get('/', index_controller.frontpage_get);
+router.get('/', login_controller.frontpage_get);
 
-router.post('/login', index_controller.login_post);
+router.post('/login', login_controller.login_post);
 
-router.get('/logout', index_controller.logout);
+router.get('/logout', login_controller.logout);
 
 /**
  * Registered Frontend

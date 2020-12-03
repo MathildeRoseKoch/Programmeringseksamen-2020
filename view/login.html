@@ -1,8 +1,22 @@
-<form id="login-form"> 
-    <p>Login:</p>
-    <input id="userEmail" type="Email" placeholder="Enter Email" value=""/>
-        <br></br>
-    <input id="userPw" type="Password" placeholder="Enter Password" value=""/>
-        <br></br>
-    <input id="login_btn" type="submit" value="Login" onClick="check()"/> 
-</form>
+  <!-- Login Form -->
+    <form action="/login" method="POST" style="text-align: center;">
+      <h1>Login</h1>
+      <label for="email">Insert your email</label>
+      <input type="text" id="email" name="email" placeholder="Email">
+      <br></br>
+      <label for="password">Insert your password</label>
+      <input type="text" id="password" name="password" placeholder="password">
+      <br></br>
+      <input type="submit" value="Login">
+    </form>
+
+  </div>
+</div>
+
+<style>
+  h1 {
+   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  color: blue;
+  }
+</style>
+

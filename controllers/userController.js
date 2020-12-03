@@ -1,15 +1,15 @@
 //var User = require('../models/user');
 var path = require('path');
 
-var config = require('../databaseConfig.js');
+var config = require('../database.js');
 var con = config.connection;
 
-// Display list of all users.
+// viser liste af alle useres 
 exports.user_list_possible_matches = function(req, res) {
-    res.send('NOT IMPLEMENTED: user possible matches list');
+    res.send('NOT IMPLEMENTED: user possible matches list'); //henviser til possible matches
 };
 
-// Display detail page for a specific user.
+// viser profile for spesifik bruger
 exports.user_detail = function(req, res) {
 
 	if(req.session.loggedin == true && req.session.email) {
@@ -35,7 +35,7 @@ exports.user_create_get = function(req, res) {
     res.sendFile(path.join(__dirname + '/../view/register.html'));
 };
 
-// Handle user create on POST.
+// Håndtere opdaterging af bruger information 
 exports.user_create_post = function(req, res) {
     var email = req.body.email;
 	var password = req.body.password;
@@ -55,8 +55,8 @@ exports.user_create_post = function(req, res) {
 			} 
 		});
 	} else {
-		res.send('Please enter Username and Password!');
-		res.end();
+		res.send('Please enter Username and Password!'); //fejlmedlning hvis man ikke har indsat alle værdier
+		res.end(); // hvis man har fører den til profile 
 	}
 };
 

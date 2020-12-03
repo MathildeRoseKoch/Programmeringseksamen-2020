@@ -1,4 +1,4 @@
-<h2>Matches</h2>
+<h1>Matches</h1>
 <% matches.forEach(function(matches) { %>
 		<% if (matches.ori_user_name == user_name) { %>
 	        <li>
@@ -9,4 +9,12 @@
 	            <strong><%= matches.ori_user_name %></strong>
 	        </li>
         <% }%>
-    <% }); %>
+	<% }); %>
+	
+	<style>
+		h1 {
+		 font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+		color: blue;
+		}
+	  </style>
+  

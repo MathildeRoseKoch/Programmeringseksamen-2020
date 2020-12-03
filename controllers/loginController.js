@@ -1,19 +1,18 @@
 //håndterer menu
-
 var path = require('path');
 
-var config = require('../databaseConfig.js');
+var config = require('../database.js');
 var con = config.connection;
 
-// Display detail page for a specific user. Register Route
+// viser profile for hver user og registere routes
 exports.frontpage_get = function(req, res) {
-	if(req.session.loggedin == true && req.session.email) {
-		res.redirect('/user');
+	if(req.session.loggedin == true && req.session.email) {//validere
+		res.redirect('/user'); 
 	}
-    res.sendFile(path.join(__dirname + '/../view/login.html'));
+    res.sendFile(path.join(__dirname + '/../view/login.html')); //transportere fil til html
 };
 
-exports.login_post = function(req, res) {
+exports.login_post = function(req, res) { //ekportere login information til MySQL database 
 
     var email = req.body.email;
 	var password = req.body.password;
@@ -41,7 +40,7 @@ exports.login_post = function(req, res) {
 	}
 };
 
-exports.logout = function(req, res) {
+exports.logout = function(req, res) { //redirecter til orginal siden 
 
     var email = req.session.email;
 	var loggedin = req.session.loggedin;
