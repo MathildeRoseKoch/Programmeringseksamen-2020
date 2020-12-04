@@ -1,7 +1,7 @@
-//var User = require('../models/user');
+//var User = require('../model/class');
 var path = require('path');
 
-var config = require('../database.js');
+var config = require('../database');
 var con = config.connection;
 
 // viser lister af alle brugere
@@ -27,7 +27,7 @@ exports.show_possible_match = function(req, res) {
 
 					var user = results[0];
 
-					res.render(path.join(__dirname + '/../view/possibleMatch'), {
+					res.render(path.join(__dirname + "/../view/posMatches"), {
 				        user: user
 				    });
 
@@ -136,7 +136,8 @@ exports.see_all_matches = function(req, res) {
 					        user_name: current_user.name
 					    });
 
-					} 		
+					} 	
+					res.end();	
 				}); 
 		   	});
 

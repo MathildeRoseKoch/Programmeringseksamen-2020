@@ -1,7 +1,7 @@
-//var User = require('../models/user');
+//var User = require('../model/class');
 var path = require('path');
 
-var config = require('../database.js');
+var config = require('../database');
 var con = config.connection;
 
 // viser liste af alle useres 
@@ -13,10 +13,14 @@ exports.user_list_possible_matches = function(req, res) {
 exports.user_detail = function(req, res) {
 
 	if(req.session.loggedin == true && req.session.email) {
+
+
 		con.query('SELECT * FROM users WHERE email = ?', [req.session.email], function(error, results, fields) {
 			if (results.length > 0) {
 
 				var user = results[0];
+				req.session.gender = user.gender;
+				req.session.interest = user.interest;
 
 				res.render(path.join(__dirname + '/../view/profile'), {
 			        user: user
@@ -25,7 +29,7 @@ exports.user_detail = function(req, res) {
 			} else {
 				res.send('Incorrect Username and/or Password!');
 			}			
-			res.end();
+			//res.end();
 		});
 	}
 };
@@ -34,6 +38,7 @@ exports.user_detail = function(req, res) {
 exports.user_create_get = function(req, res) {
     res.sendFile(path.join(__dirname + '/../view/register.html'));
 };
+
 
 // Håndtere opdaterging af bruger information 
 exports.user_create_post = function(req, res) {

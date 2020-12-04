@@ -14,12 +14,15 @@ exports.frontpage_get = function(req, res) {
 
 exports.login_post = function(req, res) { //ekportere login information til MySQL database 
 
+	console.log(req.session.touch());
+
     var email = req.body.email;
 	var password = req.body.password;
 
 	if (email && password) {
 		con.query('SELECT * FROM users WHERE email = ? AND password = ?', [req.body.email, req.body.password], function(error, results, fields) {
 			if (results.length > 0) {
+
 
 				var user = results[0];
 
