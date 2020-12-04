@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 app.use(express.static(__dirname + '/css')); //linker til statiske filer 
 app.set('view engine', 'ejs'); //bruger ejs, så man ikke skal loade template
 
-app.use(session({
+app.use(session({ //localStorage med cookies
 	secret: 'secret',
 	resave: true,
 	saveUninitialized: true
