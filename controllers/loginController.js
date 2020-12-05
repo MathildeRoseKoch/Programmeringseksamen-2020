@@ -14,22 +14,20 @@ exports.frontpage_get = function(req, res) {
 };
 
 exports.login_post = function(req, res) { //ekportere login information til MySQL database 
-	let user = new User(req.body.email, req.body.password)
 	console.log(req.session.touch());
 
-	if (user.email && user.password) {
+	if (req.body.email && req.body.password) {
 		con.query('SELECT * FROM users WHERE email = ? AND password = ?', [req.body.email, req.body.password], function(error, results, fields) {
 			if (results.length > 0) {
-
-
-				var user = results[0];
-
-				req.session.loggedin = true;
-				req.session.email = req.body.email;
-				req.session.interest = user.interest;
-				req.session.gender = user.gender;
-
-				res.redirect('/user');
+				var user = new User(results[0].email, results[0].password, results[0].name, results[0].interest, results[0].gender)
+				if (user.password == req.body.password) {
+					req.session.loggedin = true;
+					req.session.email = user.email;
+					req.session.interest = user.interest;
+					req.session.gender = user.gender;
+					res.redirect('/user');
+				}
+				
 			} else {
 				res.send('Incorrect Username and/or Password!');
 			}			
@@ -42,11 +40,11 @@ exports.login_post = function(req, res) { //ekportere login information til MySQ
 };
 
 exports.logout = function(req, res) { //redirecter til orginal siden 
-	let user = new User(req.session.email, req.session.password)
+	let logout_user = new User(req.session.email, req.session.password)
 
 	var loggedin = req.session.loggedin;
 
-	if (user.email && loggedin) { 
+	if (logout_user.email && loggedin) { 
 		req.session.destroy();
 	}
 	res.redirect('/');
