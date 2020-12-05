@@ -79,7 +79,7 @@ exports.user_delete_get = function(req, res) {
 		
 	}
 	
-    res.send('user delete POST');
+    res.send('Your profile is deleted');
 
 	res.redirect('/')
 };
@@ -98,7 +98,7 @@ exports.user_delete_post = function(req, res) {
 	else {
 		
 	}
-    res.send('user delete POST');
+    res.send('Your profile is deleted');
 };
 
 // Display user update from on GET.
@@ -116,7 +116,7 @@ exports.user_update_get = function(req, res) {
 	else {
 		
 	}
-    res.send('user update GET');
+    res.send('Your profile is updated');
 };
 
 
@@ -135,7 +135,7 @@ exports.user_update_password_get = function(req, res) {
 	else {
 		
 	}
-    res.send('user update GET');
+    res.send('Your profile is updated');
 };
 
 // Handle user update on POST.
