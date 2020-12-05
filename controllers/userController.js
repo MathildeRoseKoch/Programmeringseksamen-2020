@@ -1,4 +1,4 @@
-//var User = require('../model/class');
+var User = require('../model/class');
 var path = require('path');
 
 var config = require('../database');
@@ -42,20 +42,16 @@ exports.user_create_get = function(req, res) {
 
 // Håndtere opdaterging af bruger information 
 exports.user_create_post = function(req, res) {
-    var email = req.body.email;
-	var password = req.body.password;
-	var name = req.body.name;
-	var interest = req.body.interest;
-	var gender = req.body.gender;
-
-	if (email && password) {
+	let user = new User(req.body.email, req.body.password, req.body.name, req.body.interest, req.body.gender)
+   
+	if (user.email && user.password) {
 		var sql = "INSERT INTO users (name, gender, interest, email, password) VALUES (?, ?, ?, ?, ?)";
-		con.query(sql, [name, gender, interest, email, password], function (err, result) {
+		con.query(sql, [user.name, user.gender, user.interest, user.email, user.password], function (err, result) {
 			if (err) {
 				throw err;
 			} else {
 				req.session.loggedin = true;
-				req.session.email = email;
+				req.session.email = user.email;
 				res.redirect('/user');
 			} 
 		});
@@ -65,7 +61,7 @@ exports.user_create_post = function(req, res) {
 	}
 };
 
-// Display user delete form on GET.
+
 // Display user delete form on GET.
 exports.user_delete_get = function(req, res) {
 	console.log("SESSION ID: " + req.params.id);

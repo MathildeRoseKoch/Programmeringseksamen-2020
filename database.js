@@ -14,7 +14,7 @@ connection.connect(function(err) {
     return;
   }
 
-  console.log('connected as id' + connection.threadId); //statement der viser om jeg er connected til databse, og skaber et id, der tæller op med skabte brugere 
+  console.log('id' + connection.threadId); //statement der viser om jeg er connected til databse, og skaber et id, der tæller op med skabte brugere 
 });
 
 module.exports = {
