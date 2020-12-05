@@ -6,7 +6,7 @@ var con = config.connection;
 
 // viser liste af alle useres 
 exports.user_list_possible_matches = function(req, res) {
-    res.send('NOT IMPLEMENTED: user possible matches list'); //henviser til possible matches
+    res.send('Possible match list'); //henviser til possible matches
 };
 
 // viser profile for spesifik bruger
@@ -17,19 +17,17 @@ exports.user_detail = function(req, res) {
 
 		con.query('SELECT * FROM users WHERE email = ?', [req.session.email], function(error, results, fields) {
 			if (results.length > 0) {
-
-				var user = results[0];
-				req.session.gender = user.gender;
-				req.session.interest = user.interest;
+				req.session.gender = results[0].gender;
+				req.session.interest = results[0].interest; //objekt orienteret 
 
 				res.render(path.join(__dirname + '/../view/profile'), {
-			        user: user
+			        user: results[0]
 			    });
 
 			} else {
-				res.send('Incorrect Username and/or Password!');
+				res.send('server error');
 			}			
-			//res.end();
+			res.end();
 		});
 	}
 };
@@ -56,7 +54,7 @@ exports.user_create_post = function(req, res) {
 			} 
 		});
 	} else {
-		res.send('Please enter Username and Password!'); //fejlmedlning hvis man ikke har indsat alle værdier
+		res.send('Enter Username and Password!'); //fejlmedlning hvis man ikke har indsat alle værdier
 		res.end(); // hvis man har fører den til profile 
 	}
 };
@@ -71,7 +69,7 @@ exports.user_delete_get = function(req, res) {
 			if (err) {
 				throw err;
 			} else {
-				// TODO redirect to frontpage?
+		
 			}
 		});
 	}
@@ -91,7 +89,7 @@ exports.user_delete_post = function(req, res) {
 			if (err) {
 				throw err;
 			} else {
-				// TODO redirect to frontpage?
+				
 			}
 		});
 	}
@@ -109,7 +107,7 @@ exports.user_update_get = function(req, res) {
 			if (err) {
 				throw err;
 			} else {
-				// TODO redirect to frontpage?
+				
 			}
 		});
 	}
@@ -128,7 +126,7 @@ exports.user_update_password_get = function(req, res) {
 			if (err) {
 				throw err;
 			} else {
-				// TODO redirect to frontpage?
+				
 			}
 		});
 	}
@@ -145,10 +143,9 @@ exports.user_update_post = function(req, res) {
 
 		con.query(`UPDATE users SET name = ${name} WHERE email = ${req.session.email}`)
 
-		// TODO redirect.
+		
 	} else {
 
 	}
     res.send('user update POST');
 };
-
