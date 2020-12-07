@@ -37,70 +37,38 @@ exports.show_possible_match = function (req, res) {
 	}
 };
 
-exports.make_skip_match = function(req, res) {
-	if(req.session.loggedin == true && req.session.email) {
- 
-			var match_id = req.params.id;
-			var match_name = req.params.name;
-			var what_to_do = req.body.what_to_do;
- 
-		 var current_user = null;
- 
-		 function fetchID(callback) {
-				con.query('SELECT * FROM users WHERE email = ?', [req.session.email], function(error, results, fields) {
-				 if (results.length > 0) {
-					 var current_user = results[0];
-					 return callback(current_user);
-				 } 		
-			 });
+exports.make_skip_match = function (req, res) {
+	if (req.session.loggedin == true && req.session.email) {
+
+		var match_id = req.params.id;
+		var match_name = req.params.name;
+		var what_to_do = req.body.what_to_do;
+
+		//update last_match_check_id
+		config.connection.query('UPDATE users SET last_match_check_id = ? WHERE email = ?', [match_id, req.session.email], function (error, results, fields) { });
+		fetchID_and_name(req,  (last_m_id, last_m_name) => {
+			switch (what_to_do) {
+				case 'match':
+					config.connection.query('SELECT * FROM matches WHERE ori_user_id = ? AND match_user_id = ?', [match_id, last_m_id], function (error, results, fields) {
+						if (results.length) {
+							config.connection.query('UPDATE matches SET is_a_match = 1 WHERE ori_user_id = ? AND match_user_id = ?', [match_id, last_m_id], function (error, results, fields) { });
+						} else {
+							var sql = "INSERT INTO matches (ori_user_id, match_user_id, ori_user_name, match_user_name) VALUES (?, ?, ?, ?)";
+							config.connection.query(sql, [last_m_id, match_id, last_m_name, match_name], function (err, result) { });
+						}
+						
+					});
+	
+					res.redirect('/matches/get-more');
+					break;
+	
+				default:
+					res.redirect('/matches/get-more');
 			}
- 
-			fetchID(function(user){  
-			 current_user = user; 
- 
-			 //update last_match_check_id
-				con.query('UPDATE users SET last_match_check_id = ? WHERE email = ?', [match_id, req.session.email], function(error, results, fields) {});
- 
-				switch(what_to_do) {
-					case 'match':
- 
-					 //Check if Match
-								function checkMatch(callback) { 
-									con.query('SELECT * FROM matches WHERE ori_user_id = ? AND match_user_id = ?', [match_id, current_user.id], function(error, results, fields) {
-									 if (results.length > 0) {
-										 var match = results[0];
-										 
-										 return callback(match);
-									 } else {
-										 var match = 'no-match';
-										 return callback(match);
-									 }
-								 })
-								}
- 
-								checkMatch(function(match) { //indsætter match i mysql scheama for match
-									if(match == 'no-match') {
-										var sql = "INSERT INTO matches (ori_user_id, match_user_id, ori_user_name, match_user_name) VALUES (?, ?, ?, ?)";
-									 con.query(sql, [current_user.id, match_id, current_user.name, match_name], function (err, result) {});
-									} else {
-										con.query('UPDATE matches SET is_a_match = 1 WHERE ori_user_id = ? AND match_user_id = ?', [match_id, current_user.id], function(error, results, fields) {});
-									}
-								});
- 
-						 res.redirect('/matches/get-more');
-						break;
- 
-					default:
-						res.redirect('/matches/get-more');
-				}
- 
-		 });
-			
- 
-			
-	 }
- };
- 
+		 })
+
+	}
+};
 
 exports.see_all_matches = function (req, res) {
 	if (req.session.loggedin == true && req.session.email) {

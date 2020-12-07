@@ -34,8 +34,8 @@ exports.login_post = function(req, res) { //ekportere login information til MySQ
 			res.end();
 		});
 	} else {
-		response.send('Please enter Username and Password!');
-		response.end();
+		res.send('Please enter Username and Password!');
+		res.end();
 	}
 };
 

@@ -42,6 +42,8 @@ router.get('/user/:id/update', user_controller.user_update_get);
 
 router.post('/user/:id/update', user_controller.user_update_post);
 
+router.post('/user/:id/updatepassword/:newpassword', user_controller.user_update_password_get);
+
 router.get('/user/:id', user_controller.user_detail);
 
 router.get('/users', user_controller.user_list_possible_matches);

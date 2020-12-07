@@ -147,5 +147,5 @@ exports.user_update_post = function(req, res) {
 	} else {
 
 	}
-    res.send('user update POST');
+    res.send('Your user has been updated');
 };
