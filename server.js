@@ -14,7 +14,6 @@ var app = express(); //Session data is not saved in the cookie itself, just the 
 app.use(cors()); //cors
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
-app.use(express.static(__dirname + '/css')); //linker til statiske filer 
 app.set('view engine', 'ejs'); //bruger ejs, så man ikke skal loade template
 
 app.use(session({ //localStorage med cookies

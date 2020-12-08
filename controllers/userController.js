@@ -100,10 +100,9 @@ exports.user_delete_post = function(req, res) {
 };
 
 // Display user update from on GET.
-exports.user_update_get = function(req, res) {
-		
-	if(req.session.loggedin == true) {
-		con.query(`UPDATE users set password = ${req.params.newpassword} WHERE id = ${req.params.id}`, function (err, result) {
+exports.user_update_get = function (req, res) {
+	if (req.session.loggedin == true) {
+		con.query(`UPDATE users set password = ${req.params.newPassword} WHERE id = ${req.params.id}`, function (err, result) {
 			if (err) {
 				throw err;
 			} else {
@@ -112,40 +111,40 @@ exports.user_update_get = function(req, res) {
 		});
 	}
 	else {
-		
+
 	}
-    res.send('Your profile is updated');
+	res.send('Your user has been updated');
 };
 
 
 // Update Password
-exports.user_update_password_get = function(req, res) {
-		
-	if(req.session.loggedin == true) {
-		con.query(`UPDATE users set password = ${req.params.newpassword} WHERE id = ${req.params.id}`, function (err, result) {
+exports.user_update_password_get = function (req, res) {
+	console.log(req.body.newPassword);
+	if (req.session.loggedin == true) {
+		con.query(`UPDATE users set password = ${req.body.newPassword} WHERE id = ${req.params.id}`, function (err, result) {
 			if (err) {
 				throw err;
 			} else {
-				
+				// TODO redirect to frontpage?
 			}
 		});
 	}
 	else {
 		
 	}
-    res.send('Your profile is updated');
+	res.send('your user has been updated');
 };
 
 // Handle user update on POST.
-exports.user_update_post = function(req, res) {
+exports.user_update_post = function (req, res) {
 	if (req.session.loggedin) {
 		const { name } = req.body;
 
 		con.query(`UPDATE users SET name = ${name} WHERE email = ${req.session.email}`)
 
-		
+		// TODO redirect.
 	} else {
 
 	}
-    res.send('Your user has been updated');
+	res.send('Your user has been updated');
 };

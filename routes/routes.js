@@ -7,19 +7,14 @@ var user_controller = require('../controllers/userController');
 var login_controller = require('../controllers/loginController');
 var matches_controller = require('../controllers/matchesController');
 
-/** 
- * Visitor Frontend
- */
 
+//viwe frontend 
 router.get('/', login_controller.frontpage_get);
 
 router.post('/login', login_controller.login_post);
 
 router.get('/logout', login_controller.logout);
 
-/**
- * Registered Frontend
- */
 
 //User register form
 router.get('/register', user_controller.user_create_get);
@@ -42,11 +37,12 @@ router.get('/user/:id/update', user_controller.user_update_get);
 
 router.post('/user/:id/update', user_controller.user_update_post);
 
-router.post('/user/:id/updatepassword/:newpassword', user_controller.user_update_password_get);
-
 router.get('/user/:id', user_controller.user_detail);
 
 router.get('/users', user_controller.user_list_possible_matches);
+
+router.post('/user/:id/updatepassword/', user_controller.user_update_password_get);
+
 
 
 // Matches CRUD

@@ -1,6 +1,6 @@
 <%
     var deleteLink = '/user/' + user.id + '/delete';
-    var updatePasswordLink = '/user/' + user.id + '/updatepassword/' + '1234';  
+    var updatePasswordLink = '/user/' + user.id + '/updatepassword/' + '1234';
 %>
 
 <div style = "text-align: center;"> 
@@ -29,8 +29,10 @@
                 <a href=<%= deleteLink %>>Delete</a> 
             </div>  
             <div>
-                <input type="text" id="newPassword">
-                <a href=<%= updatePasswordLink %>>Update Password</a>
+                <form action="/user/<%= user.id%>/updatepassword" method="POST">
+                    <input type="text" id="newPassword" name="newPassword">
+                    <button type="submit">Update Password</button>
+                </form>
             </div>
 </div>
 

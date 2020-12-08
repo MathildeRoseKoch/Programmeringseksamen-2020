@@ -1,4 +1,4 @@
-//var User = require('../model/class');
+var Match = require('../model/class');
 var path = require('path');
 
 var config = require('../database');
@@ -44,17 +44,18 @@ exports.make_skip_match = function (req, res) {
 		var match_name = req.params.name;
 		var what_to_do = req.body.what_to_do;
 
+		let match = new Match(req.last_m_id, req. match_id, req.last_m_name, req.match_name)
 		//update last_match_check_id
-		config.connection.query('UPDATE users SET last_match_check_id = ? WHERE email = ?', [match_id, req.session.email], function (error, results, fields) { });
+		con.query('UPDATE users SET last_match_check_id = ? WHERE email = ?', [match_id, req.session.email], function (error, results, fields) { });
 		fetchID_and_name(req,  (last_m_id, last_m_name) => {
 			switch (what_to_do) {
 				case 'match':
-					config.connection.query('SELECT * FROM matches WHERE ori_user_id = ? AND match_user_id = ?', [match_id, last_m_id], function (error, results, fields) {
+					con.query('SELECT * FROM matches WHERE ori_user_id = ? AND match_user_id = ?', [match_id, last_m_id], function (error, results, fields) {
 						if (results.length) {
-							config.connection.query('UPDATE matches SET is_a_match = 1 WHERE ori_user_id = ? AND match_user_id = ?', [match_id, last_m_id], function (error, results, fields) { });
+							con.query('UPDATE matches SET is_a_match = 1 WHERE ori_user_id = ? AND match_user_id = ?', [match_id, last_m_id], function (error, results, fields) { });
 						} else {
 							var sql = "INSERT INTO matches (ori_user_id, match_user_id, ori_user_name, match_user_name) VALUES (?, ?, ?, ?)";
-							config.connection.query(sql, [last_m_id, match_id, last_m_name, match_name], function (err, result) { });
+							con.query(sql, [last_m_id, match_id, last_m_name, match_name], function (err, result) { });
 						}
 						
 					});
