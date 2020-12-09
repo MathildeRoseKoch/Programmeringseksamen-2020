@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 app.set('view engine', 'ejs'); //bruger ejs, så man ikke skal loade template
 
 app.use(session({ //localStorage med cookies
-	secret: 'secret',
+	secret: 'datting app',
 	resave: true,
 	saveUninitialized: true
 }));
