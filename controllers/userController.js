@@ -5,7 +5,7 @@ var config = require('../database');
 var con = config.connection;
 
 // viser liste af alle useres 
-exports.user_list_possible_matches = function(req, res) {
+exports.user_list = function(req, res) {
     res.send('Possible match list'); //henviser til possible matches
 };
 
@@ -32,7 +32,7 @@ exports.user_detail = function(req, res) {
 	}
 };
 
-// Display user create form on GET.
+// bruger get til at en update funktion
 exports.user_create_get = function(req, res) {
     res.sendFile(path.join(__dirname + '/../view/register.html'));
 };
@@ -60,12 +60,12 @@ exports.user_create_post = function(req, res) {
 };
 
 
-// Display user delete form on GET.
-exports.user_delete_get = function(req, res) {
+
+exports.user_delete_get = function(req, res) { //delete funktion med GET
 	console.log("SESSION ID: " + req.params.id);
 	
 	if(req.session.loggedin == true) {
-		con.query(`DELETE FROM users WHERE id = ${req.params.id}`, function (err, result) {
+		con.query(`DELETE FROM users WHERE id = ${req.params.id}`, function (err, result) { // henter data fra useres tabellen  
 			if (err) {
 				throw err;
 			} else {
@@ -82,8 +82,8 @@ exports.user_delete_get = function(req, res) {
 	res.redirect('/')
 };
 
-// Handle user delete on POST.
-exports.user_delete_post = function(req, res) {
+
+exports.user_delete_post = function(req, res) { //delete funktion med POST
 	if(req.session.loggedin == true) {
 		con.query(`DELETE FROM users WHERE id = ${req.session.id}`, function (err, result) {
 			if (err) {
@@ -99,10 +99,10 @@ exports.user_delete_post = function(req, res) {
     res.send('Your profile is deleted');
 };
 
-// Display user update from on GET.
-exports.user_update_get = function (req, res) {
+
+exports.user_update_get = function (req, res) { // opdater 
 	if (req.session.loggedin == true) {
-		con.query(`UPDATE users set password = ${req.params.newPassword} WHERE id = ${req.params.id}`, function (err, result) {
+		con.query(`UPDATE users set password = ${req.params.newPassword} WHERE id = ${req.params.id}`, function (err, result) { //henter data fra useres tabellen 
 			if (err) {
 				throw err;
 			} else {
@@ -117,15 +117,14 @@ exports.user_update_get = function (req, res) {
 };
 
 
-// Update Password
-exports.user_update_password_get = function (req, res) {
+exports.user_update_password_get = function (req, res) { //opdaterer password 
 	console.log(req.body.newPassword);
 	if (req.session.loggedin == true) {
 		con.query(`UPDATE users set password = ${req.body.newPassword} WHERE id = ${req.params.id}`, function (err, result) {
 			if (err) {
 				throw err;
 			} else {
-				// TODO redirect to frontpage?
+				//redirect
 			}
 		});
 	}
@@ -135,14 +134,14 @@ exports.user_update_password_get = function (req, res) {
 	res.send('your user has been updated');
 };
 
-// Handle user update on POST.
-exports.user_update_post = function (req, res) {
+
+exports.user_update_post = function (req, res) { // post opdateringen 
 	if (req.session.loggedin) {
 		const { name } = req.body;
 
 		con.query(`UPDATE users SET name = ${name} WHERE email = ${req.session.email}`)
 
-		// TODO redirect.
+		
 	} else {
 
 	}

@@ -1,4 +1,4 @@
-//håndterer menu
+//håndterer menuen
 var path = require('path');
 
 var config = require('../database.js');
@@ -6,7 +6,7 @@ var User = require('../model/class');
 var con = config.connection;
 
 // viser profile for hver user og registere routes
-exports.frontpage_get = function(req, res) {
+exports.startpoint_get = function(req, res) {
 	if(req.session.loggedin == true && req.session.email) {//validere
 		res.redirect('/user'); 
 	}
@@ -17,7 +17,7 @@ exports.login_post = function(req, res) { //ekportere login information til MySQ
 	console.log(req.session.touch());
 
 	if (req.body.email && req.body.password) {
-		con.query('SELECT * FROM users WHERE email = ? AND password = ?', [req.body.email, req.body.password], function(error, results, fields) {
+		con.query('SELECT * FROM users WHERE email = ? AND password = ?', [req.body.email, req.body.password], function(error, results, fields) {//checker email og password fra databasen 
 			if (results.length > 0) {
 				var user = new User(results[0].email, results[0].password, results[0].name, results[0].interest, results[0].gender)
 				if (user.password == req.body.password) {

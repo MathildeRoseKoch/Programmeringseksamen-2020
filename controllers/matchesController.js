@@ -1,12 +1,12 @@
-var Match = require('../model/class');
+var Match = require('../model/class'); //hentes fra match klassen
 var path = require('path');
 
-var config = require('../database');
+var config = require('../database'); //hentes fra database.js
 var con = config.connection;
 
 
 function fetchID_and_name(req, callback) {
-	con.query('SELECT * FROM users WHERE email = ?', [req.session.email], function (error, results, fields) {
+	con.query('SELECT * FROM users WHERE email = ?', [req.session.email], function (error, results, fields) { //forespørgslen til databasen
 		if (results.length > 0) {
 			var user = results[0];
 			return callback(user.last_match_check_id, user.name);
@@ -15,7 +15,7 @@ function fetchID_and_name(req, callback) {
 }
 
 // viser lister af mulige matches 
-exports.show_possible_match = function (req, res) {
+exports.possible_match = function (req, res) {
 	if (req.session.loggedin && req.session.email) { // //hvis bruger er logget ind med rigtig email , fetch ID from log in in mySql
 
 		fetchID_and_name(req, (last_m_id, last_m_name) => {
@@ -37,7 +37,7 @@ exports.show_possible_match = function (req, res) {
 	}
 };
 
-exports.make_skip_match = function (req, res) {
+exports.newprofile = function (req, res) {//viser en ny profil ved pos matchlist 
 	if (req.session.loggedin == true && req.session.email) {
 
 		var match_id = req.params.id;
@@ -45,12 +45,12 @@ exports.make_skip_match = function (req, res) {
 		var what_to_do = req.body.what_to_do;
 
 		let match = new Match(req.last_m_id, req. match_id, req.last_m_name, req.match_name)
-		//update last_match_check_id
-		con.query('UPDATE users SET last_match_check_id = ? WHERE email = ?', [match_id, req.session.email], function (error, results, fields) { });
+		
+		con.query('UPDATE users SET last_match_check_id = ? WHERE email = ?', [match_id, req.session.email], function (error, results, fields) { }); //updatere last_match_check_id
 		fetchID_and_name(req,  (last_m_id, last_m_name) => {
 			switch (what_to_do) {
 				case 'match':
-					con.query('SELECT * FROM matches WHERE ori_user_id = ? AND match_user_id = ?', [match_id, last_m_id], function (error, results, fields) {
+					con.query('SELECT * FROM matches WHERE ori_user_id = ? AND match_user_id = ?', [match_id, last_m_id], function (error, results, fields) {//henter data fra matches tabellen 
 						if (results.length) {
 							con.query('UPDATE matches SET is_a_match = 1 WHERE ori_user_id = ? AND match_user_id = ?', [match_id, last_m_id], function (error, results, fields) { });
 						} else {
@@ -71,13 +71,13 @@ exports.make_skip_match = function (req, res) {
 	}
 };
 
-exports.see_all_matches = function (req, res) {
+exports.show_matches = function (req, res) {//funktion der viser brugerens matches 
 	if (req.session.loggedin == true && req.session.email) {
 
-		con.query('SELECT * FROM users WHERE email = ?', [req.session.email], function (error, results, fields) {
+		con.query('SELECT * FROM users WHERE email = ?', [req.session.email], function (error, results, fields) {//henter data fra usertabellen 
 			if (results.length) {
 				var current_user = results[0];
-				con.query("SELECT * FROM matches WHERE (match_user_id = ? AND is_a_match = 1) OR (ori_user_id = ? AND is_a_match = 1)", [current_user.id, current_user.id], function (error, results1, fields) {
+				con.query("SELECT * FROM matches WHERE (match_user_id = ? AND is_a_match = 1) OR (ori_user_id = ? AND is_a_match = 1)", [current_user.id, current_user.id], function (error, results1, fields) { //henter data fra matches tabellen
 					if (results1.length) {
 						var matches = results1;
 	
